@@ -109,7 +109,11 @@ filter_tools.ui.render = function() {
 									cur_list.filter_list.clear_filters();
 									for(var i = 0; i < filter.filter_list.length; i++) {
 										var f = filter.filter_list[i];
-										cur_list.filter_list.add_filter(doctype, f.filter_fieldname, f.filter_condition, f.filter_value);
+										var value = f.filter_value;
+										if ( f.is_date && f.filter_condition == "Between" ) {
+											value = [f.filter_value, f.filter_value2];
+										}
+										cur_list.filter_list.add_filter(doctype, f.filter_fieldname, f.filter_condition, value);
 									}
 								}
 
@@ -152,12 +156,49 @@ filter_tools.ui.render = function() {
 							$.each(filters, function(i, filter) {
 								var fieldname = filter[1];
 								var condition = filter[2];
-								var value = filter[3];
-								data.push({
+								var value1 = filter[3];
+								var value2 = null;
+								var is_date = false;
+
+								if (typeof value1.getMonth === 'function') {
+									try {
+										value1 = moment(value1).format('YYYY-MM-DD');
+										is_date = true;
+									} catch(ex) {
+										frappe.msgprint("Invalid Date Value: " + value1);
+										return;
+									}
+								} else if ( value1.constructor == Array ) {
+
+									is_date = true;
+
+									try {
+										value2 = moment(value1[1]).format('YYYY-MM-DD');
+									} catch(ex) {
+										frappe.msgprint("Invalid Date Value: " + value[1]);
+										return;
+									}
+
+									try {
+										value1 = moment(value1[0]).format('YYYY-MM-DD');
+									} catch(ex) {
+										frappe.msgprint("Invalid Date Value: " + value1[0]);
+										return;
+									}
+
+								}
+
+								var filter_data = {
 									filter_condition: condition,
 									filter_fieldname: fieldname,
-									filter_value: value
-								});
+									filter_value: value1,
+									is_date: is_date
+								}
+								if ( value2 ) {
+									filter_data["filter_value2"] = value2
+								}
+
+								data.push(filter_data);
 							});
 
 							// get is global option if checked

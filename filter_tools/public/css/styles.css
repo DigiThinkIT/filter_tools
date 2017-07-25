@@ -5,6 +5,7 @@
 	flex-wrap: nowrap;
 }
 
+
 .filter-tools .actions input,
 .filter-tools .filter .filter-link {
 	flex-grow: 1;
@@ -19,4 +20,9 @@
 .filter-tools .filter .filter-remove {
 	flex-grow: 0;
 	flex-shrink: 0;
+	display: none;
+}
+
+.filter-tools .filter:hover .filter-remove {
+	display: inline-block;
 }
