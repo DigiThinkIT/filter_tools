@@ -73,11 +73,14 @@ filter_tools.ui.render = function() {
 							filter_cache[filters[i].name] = filters[i];
 						}
 
+						var can_add_global = frappe.user.has_role("System Manager") || frappe.user.has_role("Administrator");
+
 						// inject our widget template
 						$filter_tools.empty().append(frappe.render(frappe.templates.filter_tools, {
 							options: {
-								is_global: true
+								is_global: can_add_global
 							},
+							can_add_global: can_add_global,
 							filters: filters
 						}));
 
@@ -137,7 +140,7 @@ filter_tools.ui.render = function() {
 										// re-render filter list now with new item
 										refresh_filter_tools(1);
 									}
-								})
+								});
 							}
 						});
 
