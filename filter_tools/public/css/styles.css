@@ -1,0 +1,22 @@
+.filter-tools .actions,
+.filter-tools .filter {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+}
+
+.filter-tools .actions input,
+.filter-tools .filter .filter-link {
+	flex-grow: 1;
+	flex-shrink: 1;
+	width: 100%;
+}
+.filter-tools .filter .filter-link span {
+	margin-right: .5em;
+}
+
+.filter-tools .actions .btn,
+.filter-tools .filter .filter-remove {
+	flex-grow: 0;
+	flex-shrink: 0;
+}

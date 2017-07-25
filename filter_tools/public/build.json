@@ -1,0 +1,9 @@
+{
+	"js/filter_tools.js": [
+		"public/js/templates/filter_tools.html",
+		"public/js/filter_tools.js"
+	],
+	"css/filter_tools.css": [
+		"public/css/styles.css"
+	]
+}

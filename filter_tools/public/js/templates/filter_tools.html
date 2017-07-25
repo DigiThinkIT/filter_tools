@@ -1,0 +1,17 @@
+<li class="divider"></li>
+<li class="h6 stat-label">Stored Filters</li>
+<li class="actions module-sidebar-item">
+	<input type="text" class="filter-name" placeholder="Save Filters"/>
+	<a class="btn btn-default btn-xs save-filter">Save</a>
+</li>
+{% if ( options.is_global ) { %}
+<li class="options module-sidebar-item">
+	<label><input type="checkbox" name="is_global"/> Is Global</label>
+</li>
+{% } %}
+{% for (var i=0; i < filters.length; i++) { %}
+<li class="filter module-sidebar-item {%= filters[i].user_id?"is_user":"is_global"  %}" data-name="{%=filters[i].name %}">
+	<a class="filter-link" title="{%= filters[i].user_id?"User Filter":"Global Filter" %}"><span class="glyphicon glyphicon-{%= filters[i].user_id?"user":"globe" %}"></span>{%= filters[i].label %}</a>
+	<a class="filter-remove .btn .btn-xs glyphicon glyphicon-remove"></a>
+</li>
+{% } %}
