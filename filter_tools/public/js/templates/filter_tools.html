@@ -12,6 +12,8 @@
 {% for (var i=0; i < filters.length; i++) { %}
 <li class="filter module-sidebar-item {%= filters[i].user_id?"is_user":"is_global"  %}" data-name="{%=filters[i].name %}">
 	<a class="filter-link" title="{%= filters[i].user_id?"User Filter":"Global Filter" %}"><span class="glyphicon glyphicon-{%= filters[i].user_id?"user":"globe" %}"></span>{%= filters[i].label %}</a>
+	{% if ( !filters[i].user_id && can_add_global ) { %}
 	<a class="filter-remove .btn .btn-xs glyphicon glyphicon-remove"></a>
+	{% } %}
 </li>
 {% } %}
