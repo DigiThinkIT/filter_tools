@@ -25,7 +25,7 @@ filter_tools.ui.render = function() {
 		if ( page_type == "List" ) {
 			// get a ref to the page container
 			// all pages id are set like "page-<route>"
-			var $page = $('[id="page-'+route+'"');
+			var $page = $('[id="page-'+route+'"]');
 			// and sidebar
 			var $sidebar = $page.find('.layout-side-section .overlay-sidebar');
 
