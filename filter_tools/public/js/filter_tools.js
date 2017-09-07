@@ -12,7 +12,10 @@ filter_tools.ui.render = function() {
 	//    the sidebar height is always recalculated after rendering.
 
 	var has_sidebar = $("body").attr("data-sidebar");
-	var route = $("body").attr("data-route");
+	var route_parts = $("body").attr("data-route").split("/");
+	var route = route_parts[0] + "/" + route_parts[1];
+	var route_view = route_parts[3];
+
 
 	if ( route ) {
 		// route is made from <type>/<id>
