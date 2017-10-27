@@ -119,7 +119,8 @@ filter_tools.ui.render = function() {
 										if ( f.is_date && f.filter_condition == "Between" ) {
 											value = [f.filter_value, f.filter_value2];
 										}
-										cur_list.filter_list.add_filter(doctype, f.filter_fieldname, f.filter_condition, value);
+										var dt = f.filter_dt || doctype;
+										cur_list.filter_list.add_filter(dt, f.filter_fieldname, f.filter_condition, value);
 									}
 								}
 
@@ -160,41 +161,45 @@ filter_tools.ui.render = function() {
 							var data = [];
 
 							$.each(filters, function(i, filter) {
+								var filter_dt = filter[0];
 								var fieldname = filter[1];
 								var condition = filter[2];
 								var value1 = filter[3];
 								var value2 = null;
 								var is_date = false;
 
-								if (typeof value1.getMonth === 'function') {
-									try {
-										value1 = moment(value1).format('YYYY-MM-DD');
+								if ( value1 ) {
+									if (typeof value1.getMonth === 'function') {
+										try {
+											value1 = moment(value1).format('YYYY-MM-DD');
+											is_date = true;
+										} catch(ex) {
+											frappe.msgprint("Invalid Date Value: " + value1);
+											return;
+										}
+									} else if ( value1.constructor == Array ) {
+
 										is_date = true;
-									} catch(ex) {
-										frappe.msgprint("Invalid Date Value: " + value1);
-										return;
+
+										try {
+											value2 = moment(value1[1]).format('YYYY-MM-DD');
+										} catch(ex) {
+											frappe.msgprint("Invalid Date Value: " + value[1]);
+											return;
+										}
+
+										try {
+											value1 = moment(value1[0]).format('YYYY-MM-DD');
+										} catch(ex) {
+											frappe.msgprint("Invalid Date Value: " + value1[0]);
+											return;
+										}
+
 									}
-								} else if ( value1.constructor == Array ) {
-
-									is_date = true;
-
-									try {
-										value2 = moment(value1[1]).format('YYYY-MM-DD');
-									} catch(ex) {
-										frappe.msgprint("Invalid Date Value: " + value[1]);
-										return;
-									}
-
-									try {
-										value1 = moment(value1[0]).format('YYYY-MM-DD');
-									} catch(ex) {
-										frappe.msgprint("Invalid Date Value: " + value1[0]);
-										return;
-									}
-
 								}
 
 								var filter_data = {
+									filter_dt: filter_dt,
 									filter_condition: condition,
 									filter_fieldname: fieldname,
 									filter_value: value1,
